@@ -16,6 +16,7 @@ export default class FabricClient {
   public privateKey!: string
   public connectProfile!: object
   public gateway!: Gateway
+
   public async connectNetwork() {
     try {
       const connectionProfile = path.join(__dirname, config.connectionProfilePath)
@@ -84,15 +85,10 @@ export default class FabricClient {
     transient: TransientMap = {}
   ) {
     try {
-      const invokeResult = await this.contract
+      await this.contract
         .createTransaction(transaction)
         .setTransient(transient)
         .submit(...args)
-      var result = "[]"
-      if (invokeResult) {
-        result = invokeResult.toString()
-      }
-      return JSON.parse(result)
     } catch (error) {
       console.error(
         `Failed to invoke transaction: "${transaction}" with arguments: "${args}", transient: "${transient}",  error: "${error}"`
